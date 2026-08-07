@@ -5,9 +5,28 @@ self-contained `index.html` — no build, no dependencies, no accounts.
 
 ## Use it
 
-- **Phone / anywhere:** https://claude.ai/code/artifact/60feed68-6280-4a3e-8167-9c9d13e62403
-  (private artifact; add to home screen for an app feel)
-- **Local:** open `index.html` in a browser, or `python3 -m http.server` in this folder.
+- **Everywhere (synced):** https://vgccorner.github.io/fight-lab/ — add to home
+  screen on the phone.
+- **Local:** open `index.html` in a browser, or `python3 -m http.server` here.
+  Local copies sync too once connected.
+- Claude artifact (offline-only, no sync — its CSP blocks network):
+  https://claude.ai/code/artifact/60feed68-6280-4a3e-8167-9c9d13e62403
+
+## Sync
+
+One shared log across devices, stored as `data.json` in the **private** repo
+[`fight-lab-data`](https://github.com/Vgccorner/fight-lab-data) — every change
+is a commit, so history is free.
+
+Per device (once): Setup tab → Sync via GitHub → paste a fine-grained PAT
+(github.com → Settings → Developer settings → Fine-grained tokens; repository
+access = only `fight-lab-data`; permissions = Contents read/write).
+
+How it works: pull → union-merge by workout id (deletions carried as
+tombstones, settings by newest `updatedAt`, exercise-rotation stamps by max) →
+push with sha-based conflict retry. Pulls on open and on tab focus; pushes
+debounced ~4 s after any change. The token lives only in that browser's
+localStorage — never in exports or `data.json`.
 
 ## What it does
 
@@ -22,7 +41,5 @@ self-contained `index.html` — no build, no dependencies, no accounts.
   neglect warnings, PR board, full history.
 - Every generated session ends with kick-flexibility cool-down work.
 
-## Data
-
-`localStorage` only, per device/browser. Setup → Export/Import JSON to move or
-back up. No sync between phone and laptop (yet).
+This repo is public only to get free GitHub Pages hosting; it contains app code
+only. All personal data lives in the private data repo.
